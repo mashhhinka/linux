@@ -1,17 +1,16 @@
-# Makefile for signal-echo program
-
-# Compiler and flags
 CXX = g++
-CXXFLAGS = -std=c++17 -Wall -g
+CXXFLAGS = -std=c++17 -O2 -pthread
 
-# Targets
 TARGET = signal-echo
-SOURCES = signal-echo.cpp
+OBJECTS = signal-echo.o
 
 all: $(TARGET)
 
-$(TARGET): $(SOURCES)
-	$(CXX) $(CXXFLAGS) -o $(TARGET) $(SOURCES)
+$(TARGET): $(OBJECTS)
+	$(CXX) $(CXXFLAGS) -o $(TARGET) $(OBJECTS)
+
+signal-echo.o: signal-echo.cpp
+	$(CXX) $(CXXFLAGS) -c signal-echo.cpp
 
 clean:
-	rm -f $(TARGET)
+	rm -f $(TARGET) $(OBJECTS)
