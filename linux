@@ -1,0 +1,31 @@
+#ifndef PARALLEL_SCHEDULER_H
+#define PARALLEL_SCHEDULER_H
+
+#include <functional>
+#include <queue>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <vector>
+#include <iostream>
+
+class parallel_scheduler {
+public:
+    explicit parallel_scheduler(size_t capacity);
+    ~parallel_scheduler();
+    
+    // Enqueue a task to be executed
+    void run(std::function<void()> func);
+    
+private:
+    size_t capacity;
+    std::vector<std::thread> threads;
+    std::queue<std::function<void()>> task_queue;
+    std::mutex queue_mutex;
+    std::condition_variable cv;
+    bool stop;
+
+    void worker();
+};
+
+#endif
